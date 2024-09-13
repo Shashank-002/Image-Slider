@@ -1,0 +1,588 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    padding: 20px; 
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px; 
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; 
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 75%;
+    border-radius: 5px; 
+}
+
+.gallery-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    object-fit: cover; 
+    transition: transform 0.3s ease;
+}
+
+
+.gallery-item:hover img {
+    transform: scale(1.1); 
+}
+
+.popup {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1; 
+}
+.popup-content {
+    width: 40%; 
+    height: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; 
+    border: 2px solid white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    padding: 2px;
+    box-sizing: border-box; 
+    overflow: hidden; 
+}
+
+.popup-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: opacity 200ms ease-in-out, filter 200ms ease-in-out;
+    opacity: 0;
+    z-index: 1;
+}
+
+.popup-img.fade-out {
+    opacity: 0;
+    filter: blur(5px);
+}
+
+.popup-img.fade-in {
+    opacity: 1;
+    filter: blur(0);
+    z-index: 2;
+    transform: scale(1) rotate(0deg); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+}
+
+.popup-img.fade-in.zoom {
+    transform: scale(1.05) ;
+    filter: blur(2px);
+}
+.popup-img.active {
+    opacity: 1;
+    filter: blur(0);
+    z-index: 2;
+    
+}
+
+.popup-img.blur {
+    filter: blur(5px); 
+    transition: filter 200ms linear;
+}
+
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 35px;
+    cursor: pointer;
+    z-index: 1001; 
+    margin-right: 30px;
+}
+
+.arrow.disabled {
+    color: gray; 
+    cursor: not-allowed;
+}
+
+.nav {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.arrow {
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 0px 180px;
+}
+
+.arrow:hover {
+    color: lightgray;
+}
+
+.carousel {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 80px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s, bottom 0.3s, top 0.3s;
+    font-size: 12px;
+    z-index: 100;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    bottom: unset; 
+    top: -40px; 
+}
+
+.circle.active .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    top: -35px; 
+}
+
+
+.circle {
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s;
+    position: relative;
+}
+
+.circle:hover, .circle.active {
+    background-color: lightgray;
+    transform: scale(1.2);
+}
+
+
+.circle:hover, .active {
+    background-color: lightgray;
+    transform: scale(1.2);
+}
+
+
+@media (max-width:1440px)
+{
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        z-index: 1001;
+        margin-right: 30px; 
+    }
+
+    .arrow {
+        margin: 0px 130px;
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 70%; 
+        padding: 5px;
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
+
+@media (max-width:1024px)
+{
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 8px;
+        width: 100%;
+        max-width: 1200px; 
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; 
+    }
+
+    .arrow {
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+        padding: 10px;
+        margin: 0px 30px;
+    }
+
+    .circle {
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+        z-index: 1001; 
+        margin-right:20px ;
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 60%; 
+        padding: 3px;
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
+
+@media (max-width:768px)
+{
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 8px;
+        width: 100%;
+        max-width: 1200px; 
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; 
+    }
+
+    .arrow {
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        padding: 10px;
+        margin: 0px 30px;
+    }
+
+    .circle {
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        z-index: 1001; 
+        margin-right: 20px;
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 50%; 
+        padding: 2px;
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
+
+@media (max-width:576px)
+{
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 5px;
+        width: 100%;
+        max-width: 1200px; 
+        padding: 5px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; 
+    }
+
+    .arrow {
+        color: white;
+        font-size: 25px;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .circle {
+        width: 8px;
+        height: 8px;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        z-index: 1001; 
+        margin-right: 20px;
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 30%; 
+        padding: 2px;
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
+
+@media (max-width:420px)
+{
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 5px;
+        width: 100%;
+        max-width: 1200px; 
+        padding: 5px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; 
+    }
+
+    .arrow {
+        color: white;
+        font-size: 25px;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .circle {
+        width: 8px;
+        height: 8px;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        z-index: 1001; 
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 20%;
+        padding: 2px; 
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
+
+@media (max-width:375px)
+{
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 5px;
+        width: 100%;
+        max-width: 1200px; 
+        padding: 5px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; 
+    }
+
+    .arrow {
+        color: white;
+        font-size: 25px;
+        cursor: pointer;
+        padding: 10px;
+        margin: 0px 20px;
+    }
+
+    .circle {
+        width: 8px;
+        height: 8px;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        z-index: 1001; 
+        margin-right: 10px;
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 20%; 
+        padding: 2px;
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
+
+
+@media (min-width:1600px)
+{
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 10px;
+        width: 100%;
+        max-width: 2200px; 
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; 
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size:70px;
+        cursor: pointer;
+        z-index: 1001; 
+        margin-right: 50px;
+    }
+
+    .arrow {
+        color: white;
+        font-size: 70px;
+        cursor: pointer;
+        padding: 10px;
+        margin: 0px 200px;
+    }
+
+    .circle {
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s;
+        position: relative;
+    }
+
+    .popup-content {
+        width: 60%; 
+        height: 70%; 
+        padding: 5px;
+    }
+    
+    .popup-img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+}
